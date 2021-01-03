@@ -13,7 +13,6 @@ export const getData = async (url, token) => {
 }
 
 export const postData = async (url, post, token) => {
-    console.log("postData => ",url, post, token, baseUrl, process.env);
     const res = await fetch( `${baseUrl}/api/${url}`, {
         method: 'POST',
         headers: {

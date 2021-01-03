@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 function NavBar() {
   const router = useRouter()
   const isActive = (r) => {
-    console.log(router.pathname);
     return r === router.pathname ? ' active' : '';
   }
 

@@ -5,8 +5,7 @@ import Toast from './Toast'
 
 const Notify = () => {
     //if(!useContext(DataContext)) return (<></>)
-    const [ state, dispatch ]  = useContext(DataContext)
-    console.log('notify.js ',{state, dispatch});
+    const { state, dispatch }  = useContext(DataContext)
     const { notify } = state
     return (
         <>
