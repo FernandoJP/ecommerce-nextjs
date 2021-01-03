@@ -1,5 +1,4 @@
 const Toast = ({msg, handleShow, bgColor}) => { //destructuring in params, props object will be converted to 3 params
-    console.log('Inside Toast',msg, handleShow, bgColor);
     return (
         <div className={`toast show position-fixed text-light ${bgColor}`} 
         style={{ top: 5, right: 5, zIndex:9, minWidth: 280 }}

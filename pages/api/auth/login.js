@@ -9,26 +9,23 @@ export default async (req, res) => {
     debugger;
     switch(req.method) {
         case 'POST':
-            await register(req, res)
+            await login(req, res)
             break
     }
 }
 
-const register = async (req, res) => {
+const login = async (req, res) => {
     debugger;
     try {
-        const { name, email, password, cf_password } = JSON.parse(req.body)
+        const { email, password } = JSON.parse(req.body)
         const errMsg = valid(name, email, password, cf_password)
         if(errMsg) return res.status(400).json({err: errMsg})
 
         const user = await Users.findOne({ email })
-        if(user) return res.status(400).json({err: 'This email already exists.'})
+        if(!user) return res.status(400).json({err: 'This user does not exists.'})
 
-        const passwordHash = await bcrypt.hash(password, 12)
-
-        const newUser = new Users({ 
-            name, email, password: passwordHash, cf_password 
-        })
+        const isMatch = await bcrypt.compare(password, user.password)
+        if(!isMatch) return res.status(400).json({ err: 'Incorrect password.' })
 
         await newUser.save()
 

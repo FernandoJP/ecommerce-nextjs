@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import React, { useContext, useState } from 'react';
-import ACTIONS from '../store/Actions';
 import { DataContext } from '../store/GlobalState';
 import { postData } from '../utils/fetchData';
 import valid from '../utils/valid';
@@ -10,9 +9,7 @@ const Register = () => {
     const initialState = { name: '', email: '', password: '', cf_password: '' }
     const [ userData, setUserData ] = useState(initialState);
     const { name, email, password, cf_password } = userData;
-    const [ state, dispatch ] = useContext(DataContext)
-    console.log('Tem que ser array pq ',useContext(DataContext));
-    console.log({state, dispatch});
+    const { state, dispatch } = useContext(DataContext)
 
     const handleChangeInput = e => {
       const { name, value } = e.target
@@ -23,7 +20,6 @@ const Register = () => {
       e.preventDefault()
 
       const errMsg = valid(name, email, password, cf_password)
-      if(errMsg) console.log(errMsg)
 
       if(errMsg) return dispatch({type: 'NOTIFY', payload: { error: errMsg }})
 
