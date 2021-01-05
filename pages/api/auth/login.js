@@ -1,12 +1,13 @@
 import connectDB from "../../../utils/connectDB";
 import Users from '../../../models/userModel'
 import bcrypt from 'bcrypt'
-import valid from "../../../utils/valid";
+import {valid, validLogin} from "../../../utils/valid";
+import { createAccessToken, createRefreshToken } from '../../../utils/generateToken'
 
 connectDB()
 
 export default async (req, res) => {
-    debugger;
+    debugger
     switch(req.method) {
         case 'POST':
             await login(req, res)
@@ -15,10 +16,9 @@ export default async (req, res) => {
 }
 
 const login = async (req, res) => {
-    debugger;
     try {
         const { email, password } = JSON.parse(req.body)
-        const errMsg = valid(name, email, password, cf_password)
+        const errMsg = validLogin(email, password)
         if(errMsg) return res.status(400).json({err: errMsg})
 
         const user = await Users.findOne({ email })
@@ -27,9 +27,21 @@ const login = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password)
         if(!isMatch) return res.status(400).json({ err: 'Incorrect password.' })
 
-        await newUser.save()
+        const access_token = createAccessToken({id: user._id})
+        const refresh_token = createRefreshToken({id: user._id})
 
-        res.json({msg: 'Register success!'})
+        res.json({
+            msg: 'Register success!',
+            refresh_token,
+            access_token,
+            user: {
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                avatar: user.avatar,
+                root: user.root
+            }
+        })
     } catch (err) {
         return res.status(500).json({err: err.message})
     }

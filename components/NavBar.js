@@ -1,11 +1,39 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link'
+import Cookies from "js-cookie";
 import { useRouter } from 'next/router'
+import { DataContext } from '../store/GlobalState'
 
 function NavBar() {
   const router = useRouter()
+  const { state, dispatch } = useContext(DataContext)
+  const { auth } = state
+
   const isActive = (r) => {
     return r === router.pathname ? ' active' : '';
+  }
+
+  const handleLogout = () => {
+    Cookies.remove('refreshtoken', {path: 'api/auth/accessToken'})
+    localStorage.removeItem('firstLogin')
+    dispatch( {type: 'AUTH', payload: {} } )
+    dispatch( {type: 'SUCCESS', payload: {success: 'Logged out!'} } )
+  }
+
+  const loggedRouter = () => {
+    return (
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src={auth.user.avatar} alt="User's avatar"
+          style={{borderRadius: '50%', width: 30, height: 30, transform: 'translateY(-3px)', marginRight: '3px'}}></img>
+          {auth.user.name}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Profile</a>
+          <button class="dropdown-item" onClick={handleLogout}>Logout</button>
+        </div>
+      </li>
+    )
   }
 
   return (
@@ -23,15 +51,6 @@ function NavBar() {
 
       <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <ul className="navbar-nav">
-          {/* <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              User Name
-            </a>
-            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a className="dropdown-item" href="#">Profile</a>
-              <a className="dropdown-item" href="#">Logout</a>
-            </div>
-          </li> */}
           <li className="nav-item">
             <Link href="/cart">
             <a className={"nav-link" + isActive('/cart')}>
@@ -40,19 +59,18 @@ function NavBar() {
             </a>
           </Link>
           </li>
-          <li className="nav-item">
-          <Link href="/signin">
-            <a className={"nav-link" + isActive('/signin')}>
-              <i className="fas fa-user-tie" aria-hidden="true"></i>
-              Sign-in
-            </a>
-          </Link>
-          </li>
+          {
+            Object.keys(auth).length === 0 ? 
+            <li className="nav-item">
+            <Link href="/signin">
+              <a className={"nav-link" + isActive('/signin')}>
+                <i className="fas fa-user-tie" aria-hidden="true"></i>
+                Sign-in
+              </a>
+            </Link>
+            </li> : loggedRouter()
+          }
         </ul>
-        {/* <form className="form-inline my-2 my-lg-0">
-          <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-          <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form> */}
       </div>
     </nav>
   )

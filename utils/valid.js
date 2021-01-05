@@ -1,4 +1,4 @@
-const valid = (name, email, password, cf_password) => {
+export const valid = (name, email, password, cf_password) => {
     if(!name || !email || !password)
         return 'Please add all fields.'
 
@@ -14,9 +14,17 @@ const valid = (name, email, password, cf_password) => {
     return '';
 }
 
+export const validLogin = (email, password) => {
+    if(!email || !password)
+        return 'Please add all fields.'
+
+    if(!validateEmail(email))
+        return 'Invalid email.'
+
+    return '';
+}
+
 const validateEmail = (email) => {
     const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
-  }
-
-export default valid
+}

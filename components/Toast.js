@@ -6,7 +6,7 @@ const Toast = ({msg, handleShow, bgColor}) => { //destructuring in params, props
             <div className={`toast-header ${bgColor}`}>
                 <strong className="mr-auto text-light">{msg.title}</strong>
                 <button type="button" 
-                className="ml-2 mb-1 closetext-light text-light bg-danger" 
+                className={`ml-2 mb-1 closetext-light text-light ${bgColor}`} 
                 data-dismiss="toast"
                 style={{ outline: 'none' }} 
                 onClick={handleShow}
