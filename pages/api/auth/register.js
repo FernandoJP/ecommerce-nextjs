@@ -6,7 +6,6 @@ import valid from "../../../utils/valid";
 connectDB()
 
 export default async (req, res) => {
-    debugger;
     switch(req.method) {
         case 'POST':
             await register(req, res)
@@ -15,7 +14,6 @@ export default async (req, res) => {
 }
 
 const register = async (req, res) => {
-    debugger;
     try {
         const { name, email, password, cf_password } = JSON.parse(req.body)
         const errMsg = valid(name, email, password, cf_password)

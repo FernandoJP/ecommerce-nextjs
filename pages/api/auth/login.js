@@ -7,7 +7,6 @@ import { createAccessToken, createRefreshToken } from '../../../utils/generateTo
 connectDB()
 
 export default async (req, res) => {
-    debugger
     switch(req.method) {
         case 'POST':
             await login(req, res)

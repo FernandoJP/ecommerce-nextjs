@@ -4,10 +4,12 @@ export const getData = async (url, token) => {
     const res = await fetch( `${baseUrl}/api/${url}`, {
         method: 'GET',
         headers: {
-            'Authorization': token
+            'Authorization': token,
+            'Accept': 'application/json, text/plain, */*',
+            'User-Agent': '*'
         }
     })
-
+    console.log('data => ',res);
     const data = await res.json()
     return data
 }

@@ -17,7 +17,9 @@ a {
 
 img {
   object-fit: cover;
+  object-position: 0 20%;
 }
 
 /** loading **/
 @import url("./loading.css");
+@import url("./products.css");
