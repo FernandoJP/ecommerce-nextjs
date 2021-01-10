@@ -7,7 +7,7 @@ import { DataContext } from '../store/GlobalState'
 function NavBar() {
   const router = useRouter()
   const { state, dispatch } = useContext(DataContext)
-  const { auth } = state
+  const { auth, cart } = state
 
   const isActive = (r) => {
     return r === router.pathname ? ' active' : '';
@@ -54,8 +54,22 @@ function NavBar() {
           <li className="nav-item">
             <Link href="/cart">
             <a className={"nav-link" + isActive('/cart')}>
-              <i className="fas fa-shopping-cart" aria-hidden="true"></i>
-              Cart
+              <i className="fas fa-shopping-cart position-relative" aria-hidden="true">
+                <span className="position-absolute"
+                style={{
+                  padding:'3px 6px',
+                  background: '#6d143dc2',
+                  borderRadius: '50%',
+                  top: '-10px',
+                  right: '-10px',
+                  color: '#fff',
+                  fontSize: '14px'
+                }}
+                >
+                  {cart.length}
+                </span>
+              </i> Cart
+              
             </a>
           </Link>
           </li>

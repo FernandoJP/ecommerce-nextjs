@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { DataContext } from '../../store/GlobalState';
 import { getData } from '../../utils/fetchData';
 
 const DetailProduct = (props) => {
@@ -8,20 +9,16 @@ const DetailProduct = (props) => {
     const [product] = useState(props.product)
     const [tab, setTab] = useState(0)
 
+    const { state, dispatch } = useContext(DataContext)
+    const { cart } = state
+
     const isActive = (index) => {
         if(tab === index) return ' active'
         return ''
     }
 
-    // useEffect(() => {
-    //     const images = imgRef.current.children
-    //     for (let i = 0; i < images.length; i++) {
-    //         const image = images[i];
-    //         image.className = image.className.replace('active', 'img-thumbnail rounded')
-    //     }
-
-    //     images[tab].className = 'img-thumbnail rounded active'
-    // }, [tab])
+    const { state, dispatch } = useContext(DataContext)
+    const { auth, cart } = state
 
     return (
         <div className="row detail_page">
@@ -49,7 +46,11 @@ const DetailProduct = (props) => {
                         <div className="my-2">{product.description}</div>
                         <div className="my-2">{product.content}</div>
 
-                        <button type="buttton" className="btn btn-dark d-block my-3 px-5">
+                        <button type="buttton" 
+                        className="btn btn-dark d-block my-3 px-5"
+                        disabled={product.inStock === 0}
+                        onClick={() => dispatch(addToCart(product, cart))}>
+                        >
                             Buy
                         </button>
                     </div>

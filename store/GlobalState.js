@@ -1,12 +1,25 @@
 import { createContext, useEffect, useReducer } from 'react'
 import reducers from './Reducers'
 import { getData } from '../utils/fetchData'
+import { ACTIONS } from './Actions'
  
 export const DataContext = createContext()
 
 export const DataProvider = ({children}) => {
-    const initialState = { notify:{}, auth: {} }
+    const initialState = { notify:{}, auth: {}, cart: [] }
     const [state, dispatch] = useReducer(reducers, initialState)
+    const { cart } = state
+
+    useEffect(() => {
+        const __next__cart01__devat = JSON.parse(localStorage.getItem('__next__cart01__devat'))
+        if(__next__cart01__devat) dispatch({type: ACTIONS.ADD_CART, payload: __next__cart01__devat})
+    }, [])
+
+    useEffect(() => {
+        return () => { //don't run at first render
+            localStorage.setItem('__next__cart01__devat', JSON.stringify(cart))
+        }
+    }, [cart])
 
     useEffect(() => {
         const firstLogin = localStorage.getItem('firstLogin');
