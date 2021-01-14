@@ -17,9 +17,6 @@ const DetailProduct = (props) => {
         return ''
     }
 
-    const { state, dispatch } = useContext(DataContext)
-    const { auth, cart } = state
-
     return (
         <div className="row detail_page">
             <Head>

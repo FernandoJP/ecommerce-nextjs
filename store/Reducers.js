@@ -1,6 +1,7 @@
 import {ACTIONS} from './Actions'
 
 const reducers = (state, action) => {
+    console.log('reducers',state, action.type);
     switch(action.type) {
         case ACTIONS.NOTIFY:
             return {
@@ -16,6 +17,11 @@ const reducers = (state, action) => {
             return {
                 ...state,
                 cart: action.payload
+            }
+        case ACTIONS.ADD_MODAL:
+            return {
+                ...state,
+                modal: action.payload
             }
         default: 
             return state
